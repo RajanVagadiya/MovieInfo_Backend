@@ -1,0 +1,289 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Movie API",
+    "description": "CRUD API for movies with pagination",
+    "version": "1.0.0"
+  },
+  "host": "localhost:4000",
+  "basePath": "/api/v1/movies",
+  "tags": [
+    {
+      "name": "Movies",
+      "description": "Movie management endpoints"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/listMovies": {
+      "get": {
+        "tags": [
+          "Movies"
+        ],
+        "description": "Get paginated list of movies",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (default: 1)",
+            "required": false,
+            "type": "integer",
+            "example": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of records per page (default: 10)",
+            "required": false,
+            "type": "integer",
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PaginatedMovies"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/getAllmovies": {
+      "get": {
+        "tags": [
+          "Movies"
+        ],
+        "description": "Get all movies (no pagination)",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "array"
+                },
+                "items": {
+                  "$ref": "#/definitions/Movie"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getMovie/{id}": {
+      "get": {
+        "tags": [
+          "Movies"
+        ],
+        "description": "Get a single movie by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Movie ID",
+            "example": "507f1f77bcf86cd799439011"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Movie"
+            }
+          },
+          "404": {
+            "description": "Movie not found"
+          }
+        }
+      }
+    },
+    "/addMovie": {
+      "post": {
+        "tags": [
+          "Movies"
+        ],
+        "description": "Create a new movie",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Movie details",
+            "schema": {
+              "$ref": "#/definitions/MovieInput"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/Movie"
+            }
+          }
+        }
+      }
+    },
+    "/updateMovie/{id}": {
+      "put": {
+        "tags": [
+          "Movies"
+        ],
+        "description": "Update an existing movie by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Movie ID"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Updated movie object",
+            "schema": {
+              "$ref": "#/definitions/MovieInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Movie"
+            }
+          },
+          "404": {
+            "description": "Movie not found"
+          }
+        }
+      }
+    },
+    "/deleteMovie/{id}": {
+      "delete": {
+        "tags": [
+          "Movies"
+        ],
+        "description": "Delete a movie by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Movie ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "404": {
+            "description": "Movie not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Movie": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "507f1f77bcf86cd799439011"
+        },
+        "title": {
+          "type": "string",
+          "example": "The Godfather"
+        },
+        "director": {
+          "type": "string",
+          "example": "Francis Ford Coppola"
+        },
+        "releaseYear": {
+          "type": "number",
+          "example": 1972
+        },
+        "genre": {
+          "type": "string",
+          "example": "Crime"
+        },
+        "rating": {
+          "type": "number",
+          "example": 9.2
+        }
+      }
+    },
+    "MovieInput": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "The Godfather"
+        },
+        "director": {
+          "type": "string",
+          "example": "Francis Ford Coppola"
+        },
+        "releaseYear": {
+          "type": "number",
+          "example": 1972
+        },
+        "genre": {
+          "type": "string",
+          "example": "Crime"
+        },
+        "rating": {
+          "type": "number",
+          "example": 9.2
+        }
+      }
+    },
+    "PaginatedMovies": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Movie"
+          }
+        },
+        "total": {
+          "type": "number",
+          "example": 100
+        },
+        "page": {
+          "type": "number",
+          "example": 1
+        },
+        "limit": {
+          "type": "number",
+          "example": 10
+        }
+      }
+    }
+  }
+}
