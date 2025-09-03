@@ -19,7 +19,7 @@ This API allows you to:
 # 🛠️ Tech Stack Used
 
 - **Node.js & Express** → Server and routing  
-- **MongoDB & Mongoose** → Database and models  
+- **MongoDB Atlas & Mongoose** → Database and models  
 - **express-validator** → Request validation  
 - **swagger-autogen & swagger-ui-express** → API documentation  
 - **Jest & Supertest** → Testing  
